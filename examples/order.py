@@ -1,32 +1,13 @@
-2Checkout Python SDK
-=====================
-
-This is the current 2Checkout Python SDK providing developers with a simple set of bindings to the 2Checkout 6.0 REST API, IPN and Convert Plus Signature API.
-
-To use, clone or download a release and install (Or just import in your script.)_
-
-```shell
-cd 2checkout-python-sdk
-sudo python setup.py install
-
-```
-
-Import in your script
-```python
 import twocheckout
-```
 
-
-Example Rest API Usage
------------------
-
-*Example Usage:*
-
-```python
+# fill you MERCHANT_CODE & SECRET_KEY from 2Checkout account page
 auth_params = {
-    'merchant_code': 'YOUR_MERCHANT_CODE',
-    'secret_key': 'YOUR_SECRET_KEY'
+    'merchant_code': '',
+    'secret_key': ''
 }
+
+# Transaction ID example
+order_transaction_id = '147288494'
 
 # order params ( when creating new orders use this JSON format (some fields are optional)
 # to view what are the required or optional fields please read the our docs
@@ -108,34 +89,12 @@ order_params = {
 order = twocheckout.order.Order(auth_params)
 ## creates a new order
 new_order = order.create(order_params)
-```
 
+## get full info for an order
+get_order = order.get(new_order['body']['RefNo'])
 
-Example Convert Plus Signature Generation:
------------------------
-
-*Example Usage:*
-
-```python
-cplus = twocheckout.CplusSignature()
-cplus.get_signature('YOUR_MERCHANT_ID', 'YOUR_SECRET_WORD', 'JSON_STRING_OF_PARAMETERS')
-```
-
-
-Example IPN Usage:
----------------------
-
-*Example Usage:*
-
-```python
-ipn = twocheckout.ipn_helper.IpnHelper('YOUR_SECRET_KEY')
-ipn_valid = ipn.is_valid(DICT_OF_IPN_PARAMTERS)
-ipn_response = ipn.calculate_ipn_response(DICT_OF_IPN_PARAMTERS)
-```
-
-
-Errors:
-------------------
-
-A `TwocheckoutError` will be thrown for any library related errors. It is best to catch these errors so that they can be gracefully handled in your application.
-
+print('new order')
+print(new_order)
+print('#########################')
+print('get order ')
+print(get_order)

@@ -4,7 +4,7 @@ import codecs
 import datetime
 import requests
 import json
-from .error import TwocheckoutError 
+from .error import TwocheckoutError
 
 
 class Api:
@@ -31,11 +31,11 @@ class Api:
         string = str(len(self.merchant_code)) + self.merchant_code + str(len(now)) + now
         string = codecs.encode(string)
         secret_key = codecs.encode(self.secret_key)
-        string_hash = hmac.new(secret_key, string, hashlib.md5).hexdigest()
+        string_hash = hmac.new(secret_key, string, hashlib.sha256).hexdigest()
         return {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'X-Avangate-Authentication': 'code="' + self.merchant_code + '" date="' + now + '" hash="' + string_hash + '"'
+            'X-Avangate-Authentication': 'code="' + self.merchant_code + '" date="' + now + '" hash="' + string_hash + '" algo="sha256"'
         }
 
     # make request to 2Checkout API and returns the response

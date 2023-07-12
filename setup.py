@@ -2,7 +2,7 @@
 from distutils.core import setup
 setup(
     name="twocheckout",
-    version='1.0.0',
+    version='1.1.0',
     description="2Checkout Python SDK using API 6.0",
     author="2Checkout",
     author_email="support@2checkout.com",

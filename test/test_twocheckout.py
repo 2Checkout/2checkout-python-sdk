@@ -3,11 +3,13 @@ import os
 import sys
 import datetime
 import unittest
-import twocheckout
-from test import config
-import hmac
+import logging
+from freezegun import freeze_time
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
+import twocheckout
+from test import config
 
 NOW = datetime.datetime.now()
 
@@ -176,7 +178,7 @@ order_params_test = {
         }
     ],
     "PaymentDetails": {
-        "Type": "CC",
+        "Type": "TEST",
         "Currency": "USD",
         "CustomerIP": "91.220.121.21",
         "PaymentMethod": {
@@ -216,12 +218,12 @@ json_encoded_convert_plus_parameters = '{"merchant":"' \
 
 ipn_payload = {
     'GIFT_ORDER': '0',
-    'SALEDATE': '2021-04-08 16:29:38',
-    'PAYMENTDATE': '2021-04-08 16:29:42',
-    'REFNO': '148998082',
+    'SALEDATE': '2023-06-09 15:26:18',
+    'PAYMENTDATE': '2023-06-09 15:31:18',
+    'REFNO': '211153389',
     'REFNOEXT': 'REST_API_AVANGTE',
     'SHOPPER_REFERENCE_NUMBER': '',
-    'ORDERNO': '8978',
+    'ORDERNO': '25430',
     'ORDERSTATUS': 'COMPLETE',
     'PAYMETHOD': 'Visa/MasterCard',
     'PAYMETHOD_CODE': 'CCVISAMC',
@@ -236,41 +238,41 @@ ipn_payload = {
     'ADDRESS1': 'Test Address',
     'ADDRESS2': '',
     'CITY': 'LA',
-    'STATE': 'California',
-    'ZIPCODE': '12345',
+    'STATE': 'DF',
+    'ZIPCODE': '70403-900',
     'COUNTRY': 'United States of America',
     'COUNTRY_CODE': 'us',
-    'PHONE': '',
+    'PHONE': '556133127400',
     'FAX': '',
-    'CUSTOMEREMAIL': 'testcustomer@2Checkout.com',
+    'CUSTOMEREMAIL': 'customer@2Checkout.com',
     'FIRSTNAME_D': 'Customer',
     'LASTNAME_D': '2Checkout',
     'COMPANY_D': '',
     'ADDRESS1_D': 'Test Address',
     'ADDRESS2_D': '',
     'CITY_D': 'LA',
-    'STATE_D': 'California',
-    'ZIPCODE_D': '12345',
+    'STATE_D': 'DF',
+    'ZIPCODE_D': '70403-900',
     'COUNTRY_D': 'United States of America',
     'COUNTRY_D_CODE': 'us',
-    'PHONE_D': '',
-    'EMAIL_D': 'testcustomer@2Checkout.com',
+    'PHONE_D': '556133127400',
+    'EMAIL_D': 'customer@2Checkout.com',
     'IPADDRESS': '91.220.121.21',
     'IPCOUNTRY': 'Romania',
-    'COMPLETE_DATE': '2021-04-08 16:29:48',
+    'COMPLETE_DATE': '2023-06-09 15:31:23',
     'TIMEZONE_OFFSET': 'GMT+03:00',
-    'CURRENCY': 'USD',
+    'CURRENCY': 'RON',
     'LANGUAGE': 'en',
     'ORDERFLOW': 'REGULAR',
-    'IPN_PID[]': '35144095',
+    'IPN_PID[]': '40898000',
     'IPN_PNAME[]': 'Dynamic product',
     'IPN_PCODE[]': '',
     'IPN_EXTERNAL_REFERENCE[]': '',
     'IPN_INFO[]': '',
     'IPN_QTY[]': '1',
-    'IPN_PRICE[]': '107.00',
+    'IPN_PRICE[]': '0.01',
     'IPN_VAT[]': '0.00',
-    'IPN_VAT_RATE[]': '0.00',
+    'IPN_VAT_RATE[]': '0.0000',
     'IPN_VER[]': '1',
     'IPN_DISCOUNT[]': '0.00',
     'IPN_PROMOTION_CATEGORY[]': '',
@@ -281,54 +283,50 @@ ipn_payload = {
     'IPN_PARTNER_CODE': '',
     'IPN_PGROUP[]': '0',
     'IPN_PGROUP_NAME[]': '',
-    'MESSAGE_ID': '250833683479',
+    'MESSAGE_ID': '254514574331',
     'MESSAGE_TYPE': 'COMPLETE',
-    'IPN_LICENSE_PROD[]': '35144095',
+    'IPN_LICENSE_PROD[]': '40898000',
     'IPN_LICENSE_TYPE[]': 'REGULAR',
-    'IPN_LICENSE_REF[]': '9WITYHQ6NF',
-    'IPN_LICENSE_EXP[]': '2021-04-10 16:29:42',
-    'IPN_LICENSE_START[]': '2021-04-08 16:29:42',
-    'IPN_LICENSE_LIFETIME[]': 'NO',
+    'IPN_LICENSE_REF[]': 'XRILXB9ZI3',
+    'IPN_LICENSE_EXP[]': '9999-12-31 23:59:59',
+    'IPN_LICENSE_START[]': '2023-06-09 15:31:18',
+    'IPN_LICENSE_LIFETIME[]': 'YES',
     'IPN_LICENSE_ADDITIONAL_INFO[]': '',
     'IPN_DELIVEREDCODES[]': '',
     'IPN_DOWNLOAD_LINK': '',
-    'IPN_TOTAL[]': '107.00',
-    'IPN_TOTALGENERAL': '107.00',
+    'IPN_TOTAL[]': '0.01',
+    'IPN_TOTALGENERAL': '0.01',
     'IPN_SHIPPING': '0.00',
     'IPN_SHIPPING_TAX': '0.00',
-    'AVANGATE_CUSTOMER_REFERENCE': '884855078',
-    'EXTERNAL_CUSTOMER_REFERENCE': '',
+    'AVANGATE_CUSTOMER_REFERENCE': '756227060',
+    'EXTERNAL_CUSTOMER_REFERENCE': 'IOUER',
     'IPN_PARTNER_MARGIN_PERCENT': '0.00',
     'IPN_PARTNER_MARGIN': '0.00',
     'IPN_EXTRA_MARGIN': '0.00',
     'IPN_EXTRA_DISCOUNT': '0.00',
     'IPN_COUPON_DISCOUNT': '0.00',
     'IPN_LINK_SOURCE': 'testAPI.com',
-    'IPN_COMMISSION': '4.1015',
+    'IPN_COMMISSION': '2.7678',
     'REFUND_TYPE': '',
-    'IPN_PRODUCT_OPTIONS_35144095_TEXT[]': 'Name LR',
-    'IPN_PRODUCT_OPTIONS_35144095_VALUE[]': 'f21a6009c31851ab5166190e353012bd',
-    'IPN_PRODUCT_OPTIONS_35144095_OPTIONAL_VALUE[]': 'f21a6009c31851ab5166190e353012bd',
-    'IPN_PRODUCT_OPTIONS_35144095_PRICE[]': '7.00',
-    'IPN_PRODUCT_OPTIONS_35144095_OPERATOR[]': 'ADD',
-    'IPN_PRODUCT_OPTIONS_35144095_USAGE[]': 'PREPAID',
     'CHARGEBACK_RESOLUTION': 'NONE',
     'CHARGEBACK_REASON_CODE': '',
-    'TEST_ORDER': '1',
+    'TEST_ORDER': '0',
     'IPN_ORDER_ORIGIN': 'API',
     'FRAUD_STATUS': 'APPROVED',
-    'CARD_TYPE': 'visa',
-    'CARD_LAST_DIGITS': '1111',
-    'CARD_EXPIRATION_DATE': '12/22',
+    'CARD_TYPE': 'mastercard',
+    'CARD_LAST_DIGITS': '5547',
+    'CARD_EXPIRATION_DATE': '05/27',
     'GATEWAY_RESPONSE': 'Approved',
-    'IPN_DATE': '20210408185911',
-    'FX_RATE': '1',
-    'FX_MARKUP': '0',
-    'PAYABLE_AMOUNT': '102.90',
+    'IPN_DATE': '20230621183208',
+    'FX_RATE': '0.20810660205937',
+    'FX_MARKUP': '4',
+    'PAYABLE_AMOUNT': '-0.57',
     'PAYOUT_CURRENCY': 'USD',
     'VENDOR_CODE': '250111206876',
     'PROPOSAL_ID': '',
-    'HASH': '8d05499f0933c2e07c8599ff3a2e5338'
+    'HASH': 'c9dab0c182b551b1e5d2cc9c17d72c8a',
+    'SIGNATURE_SHA2_256': '4e1987e54ba070da5dcb583251b71a221c64b41e7bf4d9156938ece4d536a00e',
+    'SIGNATURE_SHA3_256': '9a4deae5e3479adcbecb7b1f8202ab86e3d3ff415b5add9c40737f1a01b400fc'
 }
 
 
@@ -350,7 +348,7 @@ class CplusSignatureTest(CplusTestCase):
             config.TWOCHECKOUT_TEST_BUYLINK_SECRET_WORD,
             json_encoded_convert_plus_parameters)))
 
-    def test_1_get_signature_with_token_expiration(self):
+    def test_2_get_signature_with_token_expiration(self):
         self.assertEqual(64, len(self.cplus.get_signature(
             config.TWOCHECKOUT_TEST_MERCHANT_ID,
             config.TWOCHECKOUT_TEST_BUYLINK_SECRET_WORD,
@@ -373,7 +371,8 @@ class OrderTest(ApiTestCase):
 
     # Get order test
     def test_1_order_get(self):
-        self.assertEqual(order_get_test, self.order.get(order_transaction_id))
+        response = self.order.get(order_transaction_id)
+        self.assertEqual(order_transaction_id, response['body']['RefNo'])
 
     # Create order test
     def test_2_order_create(self):
@@ -387,38 +386,56 @@ class IpnHelperTestCase(unittest.TestCase):
         super(IpnHelperTestCase, self).setUp()
         self.ipn = twocheckout.IpnHelper(config.TWOCHECKOUT_TEST_MERCHANT_SECRET_KEY)
 
-    def test_1_ipn_hash(self):
+    def test_1_ipn_sha3(self):
+        params = ipn_payload.copy()
 
-        self.assertEqual(True, self.ipn.is_valid(ipn_payload))
+        self.assertEqual(True, self.ipn.is_valid(params))
+    
+    def test_2_ipn_sha2(self):
+        params = ipn_payload.copy()
+        if 'SIGNATURE_SHA3_256' in params:
+            del params['SIGNATURE_SHA3_256']
 
-    def test_2_ipn_calculate_response(self):
-        expected = self.calculate_ipn_response(ipn_payload)
-        received = self.ipn.calculate_ipn_response(ipn_payload)
+        self.assertEqual(True, self.ipn.is_valid(params))
+    
+    def test_3_ipn_md5(self):
+        params = ipn_payload.copy()
+        if 'SIGNATURE_SHA3_256' in params:
+            del params['SIGNATURE_SHA3_256']
+        if 'SIGNATURE_SHA2_256' in params:
+            del params['SIGNATURE_SHA2_256']
+
+        self.assertEqual(True, self.ipn.is_valid(params))
+
+    @freeze_time("Jan 1st, 2023")
+    def test_4_ipn_calculate_response_sha3(self):
+        params = ipn_payload.copy()
+        date = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+        expected = '<sig algo="sha3_256" date="' + date + '">8bfa5029589981a1f959cfb0f95fb16f1f270237bed4af3531ab2c162bf0d48c</sig>'
+        received = self.ipn.calculate_ipn_response(params, date)
         
         self.assertEqual(expected, received)
 
-    def calculate_ipn_response(self, params):
-        now = NOW
-        result = ''
-        ipn_response = {'IPN_PID': [params['IPN_PID[]']],
-                        'IPN_NAME': [params['IPN_PNAME[]']],
-                        'IPN_DATE': params['IPN_DATE'],
-                        'DATE': now.strftime('%Y%m%d%H%M%S')}
+    @freeze_time("Jan 1st, 2023")
+    def test_5_ipn_calculate_response_sha2(self):
+        params = ipn_payload.copy()
+        if 'SIGNATURE_SHA3_256' in params:
+            del params['SIGNATURE_SHA3_256']
+        date = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+        expected = '<sig algo="sha256" date="' + date + '">e2594e0b3054b5d21c9ea8be18356f1ac43f5ca6bb66473556f6beb49880adf9</sig>'
+        received = self.ipn.calculate_ipn_response(params, date)
+        
+        self.assertEqual(expected, received)
 
-        for param in ipn_response:
-            if type(ipn_response[param]) is list:
-                result += self.expand(ipn_response[param])
-            else:
-                size = len(ipn_response[param])
-                result += str(size) + ipn_response[param]
-
-        return '<EPAYMENT>' + ipn_response['DATE'] + '|' + hmac.new(
-            config.TWOCHECKOUT_TEST_MERCHANT_SECRET_KEY.encode(), result.encode(),
-            'md5').hexdigest() + '</EPAYMENT>'
-
-    def expand(self, val_list):
-        result = ''
-        for val in val_list:
-            size = len(val.lstrip())
-            result += str(size) + str(val.lstrip())
-        return result
+    @freeze_time("Jan 1st, 2023")
+    def test_6_ipn_calculate_response_md5(self):
+        params = ipn_payload.copy()
+        if 'SIGNATURE_SHA3_256' in params:
+            del params['SIGNATURE_SHA3_256']
+        if 'SIGNATURE_SHA2_256' in params:
+            del params['SIGNATURE_SHA2_256']
+        date = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+        expected = '<EPAYMENT>' + date + '|8e8147a440040b520239d304735c2ef4</EPAYMENT>'
+        received = self.ipn.calculate_ipn_response(params, date)
+        
+        self.assertEqual(expected, received)
